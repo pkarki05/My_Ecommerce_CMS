@@ -5,3 +5,4 @@
 4. react-icons
 5. @reduxjs/toolkit
 6. react-toastify
+7. react-redux
