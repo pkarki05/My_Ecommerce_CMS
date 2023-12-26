@@ -1,0 +1,25 @@
+.App {
+  /* text-align: center; */
+}
+.main {
+  min-height: 85vh;
+}
+
+.admin-items:hover {
+  background: white;
+  color: #0d6efd !important;
+  cursor: pointer;
+  /* transition: 0.08s ease-in-out; */
+}
+.Active {
+  background-color: green;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+}
+.Inactive {
+  background: red;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+}

@@ -1,19 +1,21 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import{getAuth} from 'firebase/auth'
-import {getFireStore} from 'firebase/firestore'
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MSG_SND_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MGRT_ID,
+  apiKey: "AIzaSyC0yFt_Gmk7thlrLhhWkNcf0LArXizX0dI",
+  authDomain: "e-commerce-project-learning.firebaseapp.com",
+  projectId: "e-commerce-project-learning",
+  storageBucket: "e-commerce-project-learning.appspot.com",
+  messagingSenderId: "527736303622",
+  appId: "1:527736303622:web:3f19540b72bc6db2509387",
+  measurementId: "G-YFZW810T2C",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth=getAuth(app)
-export const db=getFirestore(app)
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+export { auth, db };
