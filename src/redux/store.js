@@ -4,10 +4,14 @@ import reducer from "./auth/userSlice";
 import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
 import categoryReducer from "../redux/category/categorySlice";
+import modalReducer from "../redux/modal-state/modalSlice";
+import productReducer from "../redux/product/productSlice";
 
 const reducers = combineReducers({
   userInfo: userReducer,
   category: categoryReducer,
+  product: productReducer,
+  modal: modalReducer,
 });
 const persistConfig = {
   key: "root",

@@ -20,6 +20,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebaseConfig";
 import { getUserInfo } from "./redux/auth/UserAction";
 import { persistStore, persistReducer } from "redux-persist";
+import ProductTable from "./pages/product/ProductTable";
+import AddNewProduct from "./components/product/AddNewProduct";
+import EditProduct from "../src/components/product/EditProduct";
 
 function App() {
   const dispatch = useDispatch();
@@ -59,6 +62,22 @@ function App() {
           element={
             <PrivateRoute>
               <Product />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product/new"
+          element={
+            <PrivateRoute>
+              <AddNewProduct />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product/edit/:slug"
+          element={
+            <PrivateRoute>
+              <EditProduct />
             </PrivateRoute>
           }
         />

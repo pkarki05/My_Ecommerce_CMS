@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import slugify from "slugify";
 import { addCategoryAction } from "../../redux/category/categoryAction";
 import { fetchCategoriesAction } from "../../redux/category/categoryAction";
 
-function NewCategoryForm() {
+function EditCategoryForm() {
   const dispatch = useDispatch();
   const [form, setForm] = useState({ status: "Inactive" });
+  const { selectedCategory } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    setForm(selectedCategory);
+    // console.log(selectedCategory);
+  }, [selectedCategory]);
+
   const handleOnChange = (e) => {
     const { name, value, checked } = e.target;
     // console.log(name, value, checked);
@@ -23,11 +30,8 @@ function NewCategoryForm() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    // console.log(form);
-    const slug = slugify(form.name, { lower: true, trim: true });
-    const catObj = { ...form, slug };
-    dispatch(addCategoryAction(catObj));
-    setForm({ status: "Inactive" });
+    console.log(form);
+    dispatch(addCategoryAction(form));
   };
 
   return (
@@ -38,11 +42,13 @@ function NewCategoryForm() {
       >
         <Row className="d-flex  align-items-center">
           <Col className="d-flex justify-content-center">
-            <Form.Check // prettier-ignore
+            <Form.Check
+              checked={form.status === "Active"}
               type="switch"
               label="Status"
               name="status"
               onChange={handleOnChange}
+              //   checked={form.status === "Active"}
             />
           </Col>
           <Col className="d-flex justify-content-center">
@@ -50,6 +56,7 @@ function NewCategoryForm() {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 required
+                value={form.name}
                 name="name"
                 type="text"
                 placeholder="Enter Category"
@@ -60,7 +67,7 @@ function NewCategoryForm() {
 
           <Col className="d-flex justify-content-center">
             <Button variant="primary" type="submit">
-              Add Category
+              Update
             </Button>
           </Col>
         </Row>
@@ -69,4 +76,4 @@ function NewCategoryForm() {
   );
 }
 
-export default NewCategoryForm;
+export default EditCategoryForm;

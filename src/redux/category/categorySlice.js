@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-    categoryList: [],
+  categoryList: [],
   selectedCategory: {},
 };
 const categorySlice = createSlice({
-  name: "Category",
+  name: "category",
   initialState,
 
   reducers: {
@@ -12,11 +12,11 @@ const categorySlice = createSlice({
       state.categoryList = action.payload;
     },
     setSelectedCategory: (state, action) => {
-        state.selectedCategory = action.payload;
-      },
+      state.selectedCategory = action.payload;
+    },
   },
 });
 
 const { actions, reducer } = categorySlice;
-export const { setCategoryList,setSelectedCategory } = actions;
+export const { setCategoryList, setSelectedCategory } = actions;
 export default reducer;

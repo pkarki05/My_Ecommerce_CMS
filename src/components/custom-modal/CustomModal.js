@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-function CustomModal({ show, handleClose, children, title }) {
+import { useDispatch, useSelector } from "react-redux";
+import { setModalShow } from "../../redux/modal-state/modalSlice";
+function CustomModal({  children, title }) {
+  const dispatch = useDispatch();
+  const { modalShow } = useSelector((state) => state.modal);
+
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={modalShow} onHide={() => dispatch(setModalShow(false))}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
