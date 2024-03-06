@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { ProgressBar } from "react-bootstrap";
 import AdminLayout from "../../components/layout/AdminLayout";
 import { useParams } from "react-router-dom";
+import { CgLaptop } from "react-icons/cg";
 function EditProductForm() {
   const { categoryList } = useSelector((state) => state.category);
   const { productList } = useSelector((state) => state.product);
@@ -24,7 +25,7 @@ function EditProductForm() {
   useEffect(() => {
     const productInfo = productList.find((product) => product.slug === slug);
     setForm(productInfo);
-  }, [slug]);
+  }, [slug, productList]);
 
   const inputFields = [
     {
@@ -43,6 +44,15 @@ function EditProductForm() {
       placeholder: "SKU100",
       required: true,
       value: form.sku,
+      disabled: true,
+    },
+    {
+      label: "Slug",
+      name: "slug",
+      type: "text",
+      required: true,
+      value: form.slug,
+      disabled:true
     },
     {
       label: "Price",
@@ -109,38 +119,23 @@ function EditProductForm() {
     }
     setForm({ ...form, [name]: value });
   };
+  // const handleThumbnailChange=(e)=>{
+  //   const {name,value}=e.target;
+  //   console.log(name,value)
+  // }
 
-  const handleOnsubmit = async (e) => {
-    e.preventDefault();
-    // const slug = slugify(form.title, { lower: true, trim: true });
-
-    const urlPromises = image.map((files) => handleImageUpload(files));
-    const urls = await Promise.all(urlPromises);
-    // console.log("urlPromises", urlPromises);
-    // console.log("url", urls);
-    // return;
-
-    //filter the list of images that need to be removed
-    const filteredImageList = form.imageUrls.filter(
-      (image) => !imageToRemove.includes(image)
-    );
-    const finalImagesList = [...filteredImageList, ...urls];
-
-    const productObj = { ...form, imageUrls: finalImagesList };
-    dispatch(addProductAction(productObj));
-    // console.log("Prouct", productObj);
-  };
+  
   const handleImageAttached = (e) => {
-    const { files } = e.target;
+    let { files } = e.target;
     console.log({ files });
     setImage([...files]);
   };
   //to handle image upload
-  const handleImageUpload = async (e) => {
-    return new Promise((resolve, reject) => {
+  const handleImageUpload = async (imageDetail) => {
+    
       //image upload
-      const imageDetail = image[0];
       const uniqueFileName = `${Date.now()}-${imageDetail.name}`;
+      return new Promise((resolve, reject) => {
       const storageRef = ref(storage, `product/images/${uniqueFileName}`);
       const uploadTask = uploadBytesResumable(storageRef, imageDetail);
       // Register three observers:
@@ -174,6 +169,30 @@ function EditProductForm() {
         }
       );
     });
+  };
+  const handleOnsubmit = async (e) => {
+    e.preventDefault();
+    // const slug = slugify(form.title, { lower: true, trim: true });
+    if(imageToRemove.includes(form.thumbnail))
+    {
+      return alert ('Thumbnail not allowed to delete!')
+    }
+
+    const urlPromises = image.map((files) => handleImageUpload(files));
+    const urls = await Promise.all(urlPromises);
+    // console.log("urlPromises", urlPromises);
+    // console.log("url", urls);
+    // return;
+
+    //filter the list of images that need to be removed
+    const filteredImageList = form.imageUrls.filter(
+      (image) => !imageToRemove.includes(image)
+    );
+    const finalImagesList = [...filteredImageList, ...urls];
+
+    const productObj = { ...form, imageUrls: finalImagesList };
+    dispatch(addProductAction(productObj));
+    // console.log("Prouct", productObj);
   };
   return (
     <Form onSubmit={handleOnsubmit} className="border p-3 mt-3 shadow rounded">
@@ -227,6 +246,11 @@ function EditProductForm() {
                   {form?.imageUrls?.length > 0 &&
                     form?.imageUrls?.map((img) => (
                       <div className=" border ">
+                        <div>
+                          <input type="radio" id="thumbnail" name="thumbnail" 
+                          onChange={handleChange}value={img } checked={img===form.thumbnail}/>
+                          <label htmlFor="thumbnail">Thumbnail</label>
+                        </div>
                         <img src={img} width="150px" />
                         <div className="d-flex justify-content-center">
                           <Form.Check

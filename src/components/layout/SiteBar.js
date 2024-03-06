@@ -12,7 +12,11 @@ import { MdReviews } from "react-icons/md";
 import { FaRegAddressCard } from "react-icons/fa6";
 
 import "../../App.css";
+import { useSelector } from "react-redux";
+import TimeBasedGreeting from "../../utils/TimeBasedGreeting.js";
 function SiteBar() {
+  const {user}=useSelector((state)=>state.userInfo)
+
   const SiteLinks = [
     {
       label: "Dashboard",
@@ -54,8 +58,8 @@ function SiteBar() {
   return (
     <div>
       <nav>
-        <div className="p-2 fs-3 align-item-center text-light">
-          Admin Account
+        <div className="p-2 fs-6 align-item-center text-light">
+          <TimeBasedGreeting userName={user.fname} />
         </div>
         <hr />
         <div>

@@ -6,6 +6,25 @@ import { auth, db } from "../../firebase/firebaseConfig";
 import { toast } from "react-toastify";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { setUser } from "./userSlice";
+import { TBL_USERS } from "../../utils/const";
+export const updateProfile =
+  ({ uid,...rest}) =>
+  async (dispatch) => {
+    try {
+      const userPromise = setDoc(doc(db,TBL_USERS,  uid), rest, {
+        merge: true,
+      });
+      toast.promise(userPromise, {
+        pending: "Please wait...",
+        error: "Error occurred",
+        success: "Successfully added ",
+      });
+       dispatch(getUserInfo(uid));
+    } catch (e) {
+      console.log("error", e); // Corrected typo here
+      toast.error("Error", e.message);
+    }
+  };
 export const createNewAdminUser = async (userInfo) => {
   try {
     const resPending = createUserWithEmailAndPassword(
@@ -22,7 +41,7 @@ export const createNewAdminUser = async (userInfo) => {
 
     //use firebase storage to save the user info in DB
     const { password, confirmPassword, ...rest } = userInfo;
-    await setDoc(doc(db, "Users", user.uid), rest);
+    await setDoc(doc(db, TBL_USERS, user.uid), rest);
   } catch (e) {
     console.log("error", e); // Corrected typo here
     toast.error("Error", e.message);
@@ -49,9 +68,8 @@ export const loginAdminUser =
 //it grabs the user info from the DB and set it to redux store
 export const getUserInfo = (uid) => async (dispatch) => {
   try {
-    console.log("Uid", uid);
 
-    const userSnap = await getDoc(doc(db, "Users", uid));
+    const userSnap = await getDoc(doc(db, TBL_USERS, uid));
     if (userSnap.exists()) {
       const userData = userSnap.data();
       dispatch(setUser({ ...userData, uid }));

@@ -6,10 +6,12 @@ import storage from "redux-persist/lib/storage";
 import categoryReducer from "../redux/category/categorySlice";
 import modalReducer from "../redux/modal-state/modalSlice";
 import productReducer from "../redux/product/productSlice";
+import paymentOptionReducer from "../redux/paymentOptions/paymentOptionsSlice";
 
 const reducers = combineReducers({
   userInfo: userReducer,
   category: categoryReducer,
+  paymentOptions:paymentOptionReducer,
   product: productReducer,
   modal: modalReducer,
 });

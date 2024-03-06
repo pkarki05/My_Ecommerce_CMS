@@ -9,12 +9,14 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase/firebaseConfig";
 import { toast } from "react-toastify";
 import { ProgressBar } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 function NewProductForm() {
   const { categoryList } = useSelector((state) => state.category);
   const [form, setForm] = useState({ status: "Inactive" });
   const dispatch = useDispatch();
   const [image, setImage] = useState([]);
   const [progress, setProgress] = useState(0);
+  const navigate=useNavigate()
   const inputFields = [
     {
       label: "Product Name *",
@@ -23,7 +25,7 @@ function NewProductForm() {
       placeholder: "Laptop",
       required: true,
     },
-    ,
+    
     {
       label: "SKU *",
       name: "sku",
@@ -98,9 +100,10 @@ function NewProductForm() {
     // console.log("url", urls);
     // return;
 
-    const productObj = { ...form, slug, imageUrls: urls, thumbnail: urls[0] };
+    const productObj = { ...form, slug, imageUrls: urls };
     dispatch(addProductAction(productObj));
-    console.log("Prouct", productObj);
+    navigate('/product')
+
   };
   const handleImageAttached = (e) => {
     const { files } = e.target;
@@ -108,11 +111,11 @@ function NewProductForm() {
     setImage([...files]);
   };
   //to handle image upload
-  const handleImageUpload = async (e) => {
-    return new Promise((resolve, reject) => {
+  const handleImageUpload = async (imageDetail) => {
       //image upload
-      const imageDetail = image[0];
       const uniqueFileName = `${Date.now()}-${imageDetail.name}`;
+      return new Promise((resolve, reject) => {
+
       const storageRef = ref(storage, `product/images/${uniqueFileName}`);
       const uploadTask = uploadBytesResumable(storageRef, imageDetail);
       // Register three observers:

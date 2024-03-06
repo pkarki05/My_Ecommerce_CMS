@@ -11,13 +11,14 @@ import {
   fetchProductAction,
 } from "../../redux/product/productAction";
 import { Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function ProductTable({ show, onHide }) {
   const dispatch = useDispatch();
   const [form, setForm] = useState({ status: "Inactive" });
   const { productList } = useSelector((state) => state.product);
   const [displayList, setDisplayList] = useState([]);
+  const {slug}=useParams();
 
   // const handleEdit = (productDetail) => {
   //   dispatch(setselectedProduct(productDetail));
@@ -29,7 +30,7 @@ function ProductTable({ show, onHide }) {
   }, []);
   useEffect(() => {
     setDisplayList(productList);
-  }, [productList, dispatch]);
+  }, [productList, dispatch])
 
   const handleDelete = (categorySlug) => {
     // Show confirmation modal or alert before proceeding with deletion
@@ -46,6 +47,21 @@ function ProductTable({ show, onHide }) {
     );
     setDisplayList(filteredList);
   };
+  const handleOnDelete = (slug) => {
+    if (window.confirm('Are You Sure?')) {
+      console.log('Deleting product...', slug);
+  
+      // Delete product
+      try {
+        dispatch(deleteProductAction(slug));
+        console.log('Product deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting product:', error);
+      }
+    }
+  };
+  
+  
 
   return (
     <>
@@ -100,13 +116,10 @@ function ProductTable({ show, onHide }) {
                       </Button>
                     </Link>
 
-                    <Button variant="danger">
-                      {/* <Button
-                      variant="danger"
-                      onClick={() => handleDelete(category.slug)}
-                    > */}
-                      Delete
-                    </Button>
+       <Button variant="danger" onClick={() => handleOnDelete(product.slug)}>
+           Delete
+</Button>
+
                   </div>
                 </td>
               </tr>
