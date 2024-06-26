@@ -43,6 +43,7 @@ function CategoryTable({ show, onHide }) {
         <thead>
           <tr>
             <th>#</th>
+            <th>Thumbnail</th>
             <th> Name</th>
             <th>Slug</th>
             <th>Status</th>
@@ -55,6 +56,9 @@ function CategoryTable({ show, onHide }) {
             return (
               <tr key={category.slug}>
                 <td>{index + 1}</td>
+                <td>
+                  <img src={category.thumbnail} width="120px" />
+                </td>
 
                 <td>{category.name}</td>
                 <td>{category.slug}</td>

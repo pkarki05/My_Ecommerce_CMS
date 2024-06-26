@@ -24,6 +24,8 @@ function Login() {
   const { user } = useSelector((state) => state.userInfo);
   console.log("User", user.uid);
   console.log("User", user);
+
+
   useEffect(() => {
     if (user.uid) {
       navigate("/dashboard");
@@ -89,6 +91,7 @@ function Login() {
   return (
     <>
       <Header  />
+      
       <Form
         onSubmit={handleOnSubmit}
         className="vh-100"
@@ -137,15 +140,22 @@ function Login() {
                 </div>
                     </>
                    )}
+                   <div className=" d-flex gap-5  mt-3 ">
+                    <p>Email:p@k.com</p>
+                    <p>Password:11111111</p>
+                  </div>
 
                   
 
                   <hr classNameName="my-4" />
                 </div>
+                
               </div>
             </div>
+            
           </div>
         </div>
+        
       </Form>
       <Footer />
     </>
